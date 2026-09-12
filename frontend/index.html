@@ -1,57 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Tournament Tool Test</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tournament Bot</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>🏆 Tournament Tool — Test Page</h1>
+<main class="main-container">
+<section class="carousel-section">
+<div class="carousel-container"><div class="carousel-track">
 
-  <h2>Signup</h2>
-  <form id="signupForm">
-    <input type="text" id="signupUsername" placeholder="Username" required>
-    <input type="password" id="signupPassword" placeholder="Password" required>
-    <button type="submit">Signup</button>
-  </form>
+<article class="card"><div class="card-content">
+<div class="feature-icon">🏆</div><h2>Tournaments</h2>
+<p>Create and manage tournaments with a simple, organised system built for your community.</p>
+</div></article>
 
-  <h2>Login</h2>
-  <form id="loginForm">
-    <input type="text" id="loginUsername" placeholder="Username" required>
-    <input type="password" id="loginPassword" placeholder="Password" required>
-    <button type="submit">Login</button>
-  </form>
+<article class="card"><div class="card-content">
+<div class="feature-icon">⚔️</div><h2>Matches</h2>
+<p>Keep track of matches, players and results throughout your tournament.</p>
+</div></article>
 
-  <div id="output" style="margin-top:20px; font-weight:bold;"></div>
+<article class="card"><div class="card-content">
+<div class="feature-icon">📊</div><h2>Leaderboards</h2>
+<p>Follow tournament progress with clear standings and live results.</p>
+</div></article>
 
-  <script>
-    const backendUrl = "https://tournament-tool-f1p7.onrender.com";
+<article class="card"><div class="card-content">
+<div class="feature-icon">👥</div><h2>Communities</h2>
+<p>Bring your players together and make managing your community easier.</p>
+</div></article>
 
-    async function postData(url, data) {
-      const res = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      });
-      return res.json();
-    }
+<article class="card"><div class="card-content">
+<div class="feature-icon">⚙️</div><h2>Automation</h2>
+<p>Let the bot handle repetitive tournament tasks while you focus on your community.</p>
+</div></article>
 
-    document.getElementById("signupForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const result = await postData(`${backendUrl}/auth/signup`, {
-        username: document.getElementById("signupUsername").value,
-        password: document.getElementById("signupPassword").value
-      });
-      document.getElementById("output").innerText = "Signup: " + JSON.stringify(result);
-    });
+</div></div>
+</section>
 
-    document.getElementById("loginForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const result = await postData(`${backendUrl}/auth/login`, {
-        username: document.getElementById("loginUsername").value,
-        password: document.getElementById("loginPassword").value
-      });
-      document.getElementById("output").innerText = "Login: " + JSON.stringify(result);
-    });
-  </script>
+<section class="info-section">
+<div class="info-content">
+<header class="bot-header">
+<h1>Tournament Bot</h1>
+<p class="bot-description">A powerful tournament management platform designed to make creating, organising and running tournaments simple.</p>
+</header>
+
+<div class="auth-buttons">
+<a href="#" class="btn"><span>Login</span><span>→</span></a>
+<a href="#" class="btn btn-signup"><span>Sign Up</span><span>→</span></a>
+</div>
+</div>
+</section>
+</main>
+<script src="script.js"></script>
 </body>
 </html>

@@ -19,5 +19,8 @@
     "express-session": "^1.19.0",
     "mongodb": "^7.6.0",
     "mongoose": "^9.10.0"
+  },
+  "devDependencies": {
+    "@ljharb/tsconfig": "^0.3.2"
   }
 }
