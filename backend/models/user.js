@@ -1,15 +1,25 @@
 const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
-  username: {
+  discordId: {
     type: String,
     required: true,
     unique: true,
+    index: true
+  },
+  username: {
+    type: String,
+    required: true,
     trim: true
   },
-  password: {
+  globalName: {
     type: String,
-    required: true
+    default: null,
+    trim: true
+  },
+  avatar: {
+    type: String,
+    default: null
   }
 }, { timestamps: true });
 
