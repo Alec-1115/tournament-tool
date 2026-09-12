@@ -1,47 +1,147 @@
 const express = require('express');
+const crypto = require('crypto');
 const router = express.Router();
-const bcrypt = require('bcrypt');
-const User = require('../models/user'); // lowercase to match file name
+const User = require('../models/user');
 
-// Signup route
-router.post('/signup', async (req, res) => {
+const DISCORD_API = 'https://discord.com/api/v10';
+
+// Start Discord OAuth2 login
+router.get('/discord', (req, res) => {
+  if (!process.env.DISCORD_CLIENT_ID || !process.env.DISCORD_REDIRECT_URI) {
+    return res.status(500).json({ error: 'Discord OAuth is not configured on the server.' });
+  }
+
+  const state = crypto.randomBytes(32).toString('hex');
+  req.session.discordOAuthState = state;
+
+  const params = new URLSearchParams({
+    client_id: process.env.DISCORD_CLIENT_ID,
+    redirect_uri: process.env.DISCORD_REDIRECT_URI,
+    response_type: 'code',
+    scope: 'identify',
+    state
+  });
+
+  res.redirect(`${DISCORD_API}/oauth2/authorize?${params.toString()}`);
+});
+
+// Discord OAuth2 callback
+router.get('/discord/callback', async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { code, state, error } = req.query;
 
-    const existingUser = await User.findOne({ username });
-    if (existingUser) {
-      return res.status(400).json({ message: 'User already exists' });
+    if (error) {
+      return res.redirect(`${process.env.FRONTEND_URL}/login.html?error=discord_denied`);
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ username, password: hashedPassword });
-    await newUser.save();
+    if (!code || !state || state !== req.session.discordOAuthState) {
+      return res.status(400).json({ error: 'Invalid OAuth state or authorization code.' });
+    }
 
-    res.status(201).json({ message: 'Signup successful' });
+    delete req.session.discordOAuthState;
+
+    const tokenResponse = await fetch(`${DISCORD_API}/oauth2/token`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: new URLSearchParams({
+        client_id: process.env.DISCORD_CLIENT_ID,
+        client_secret: process.env.DISCORD_CLIENT_SECRET,
+        grant_type: 'authorization_code',
+        code,
+        redirect_uri: process.env.DISCORD_REDIRECT_URI
+      })
+    });
+
+    if (!tokenResponse.ok) {
+      console.error('Discord token exchange failed:', await tokenResponse.text());
+      return res.redirect(`${process.env.FRONTEND_URL}/login.html?error=discord_auth_failed`);
+    }
+
+    const tokenData = await tokenResponse.json();
+
+    const userResponse = await fetch(`${DISCORD_API}/users/@me`, {
+      headers: {
+        Authorization: `Bearer ${tokenData.access_token}`
+      }
+    });
+
+    if (!userResponse.ok) {
+      console.error('Discord user lookup failed:', await userResponse.text());
+      return res.redirect(`${process.env.FRONTEND_URL}/login.html?error=discord_user_failed`);
+    }
+
+    const discordUser = await userResponse.json();
+
+    let user = await User.findOne({ discordId: discordUser.id });
+
+    if (!user) {
+      user = new User({
+        discordId: discordUser.id,
+        username: discordUser.username,
+        globalName: discordUser.global_name || null,
+        avatar: discordUser.avatar || null
+      });
+    } else {
+      user.username = discordUser.username;
+      user.globalName = discordUser.global_name || null;
+      user.avatar = discordUser.avatar || null;
+    }
+
+    await user.save();
+
+    req.session.userId = user._id.toString();
+    req.session.discordId = user.discordId;
+
+    req.session.save(err => {
+      if (err) {
+        console.error('Session save failed:', err);
+        return res.status(500).json({ error: 'Failed to create login session.' });
+      }
+
+      res.redirect(`${process.env.FRONTEND_URL}/dashboard.html`);
+    });
   } catch (err) {
-    res.status(500).json({ error: 'Server error during signup' });
+    console.error('Discord authentication error:', err);
+    res.redirect(`${process.env.FRONTEND_URL}/login.html?error=server_error`);
   }
 });
 
-// Login route
-router.post('/login', async (req, res) => {
+// Return the currently authenticated user
+router.get('/me', async (req, res) => {
   try {
-    const { username, password } = req.body;
+    if (!req.session.userId) {
+      return res.status(401).json({ authenticated: false });
+    }
 
-    const user = await User.findOne({ username });
+    const user = await User.findById(req.session.userId).select('-__v');
+
     if (!user) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+      req.session.destroy(() => {});
+      return res.status(401).json({ authenticated: false });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid credentials' });
-    }
-
-    res.status(200).json({ message: 'Login successful' });
+    res.json({
+      authenticated: true,
+      user
+    });
   } catch (err) {
-    res.status(500).json({ error: 'Server error during login' });
+    console.error('Auth check error:', err);
+    res.status(500).json({ error: 'Failed to check authentication.' });
   }
+});
+
+// Log out
+router.post('/logout', (req, res) => {
+  req.session.destroy(err => {
+    if (err) {
+      return res.status(500).json({ error: 'Failed to log out.' });
+    }
+
+    res.clearCookie('connect.sid');
+    res.json({ message: 'Logged out successfully' });
+  });
 });
 
 module.exports = router;
