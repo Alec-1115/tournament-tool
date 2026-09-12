@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tournament Tool Test</title>
+</head>
+<body>
+  <h1>🏆 Tournament Tool — Test Page</h1>
+
+  <h2>Signup</h2>
+  <form id="signupForm">
+    <input type="text" id="signupUsername" placeholder="Username" required>
+    <input type="password" id="signupPassword" placeholder="Password" required>
+    <button type="submit">Signup</button>
+  </form>
+
+  <h2>Login</h2>
+  <form id="loginForm">
+    <input type="text" id="loginUsername" placeholder="Username" required>
+    <input type="password" id="loginPassword" placeholder="Password" required>
+    <button type="submit">Login</button>
+  </form>
+
+  <div id="output" style="margin-top:20px; font-weight:bold;"></div>
+
+  <script>
+    const backendUrl = "https://tournament-tool-f1p7.onrender.com";
+
+    async function postData(url, data) {
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+      return res.json();
+    }
+
+    document.getElementById("signupForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const result = await postData(`${backendUrl}/auth/signup`, {
+        username: document.getElementById("signupUsername").value,
+        password: document.getElementById("signupPassword").value
+      });
+      document.getElementById("output").innerText = "Signup: " + JSON.stringify(result);
+    });
+
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const result = await postData(`${backendUrl}/auth/login`, {
+        username: document.getElementById("loginUsername").value,
+        password: document.getElementById("loginPassword").value
+      });
+      document.getElementById("output").innerText = "Login: " + JSON.stringify(result);
+    });
+  </script>
+</body>
+</html>
