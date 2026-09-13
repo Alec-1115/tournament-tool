@@ -1,26 +1,20 @@
 {
-  "name": "backend",
+  "name": "tournament-tool-backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "Tournament Bot backend",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
-    "bcrypt": "^6.0.0",
-    "bcryptjs": "^3.0.3",
     "connect-mongo": "^6.0.0",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
-    "mongodb": "^7.6.0",
     "mongoose": "^9.10.0"
-  },
-  "devDependencies": {
-    "@ljharb/tsconfig": "^0.3.2"
   }
 }
