@@ -10,7 +10,6 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Required environment variables
 const requiredEnv = [
   'MONGO_URI',
   'SESSION_SECRET',
@@ -30,20 +29,18 @@ for (const name of requiredEnv) {
   }
 }
 
-// Trust Render's reverse proxy
 app.set('trust proxy', 1);
 
-// Allow the Vercel frontend to communicate with the backend
 app.use(cors({
   origin: process.env.FRONTEND_URL,
   credentials: true
 }));
 
-// Parse JSON requests
 app.use(express.json());
 
-// Session configuration
 app.use(session({
+  name: 'tournament.sid',
+
   secret: process.env.SESSION_SECRET,
 
   resave: false,
@@ -52,7 +49,7 @@ app.use(session({
 
   store: MongoStore.create({
     mongoUrl: process.env.MONGO_URI,
-    ttl: 14 * 24 * 60 * 60
+    ttl: 30 * 24 * 60 * 60
   }),
 
   cookie: {
@@ -62,21 +59,18 @@ app.use(session({
 
     sameSite: 'none',
 
-    maxAge: 1000 * 60 * 60 * 24
+    maxAge: 1000 * 60 * 60 * 24 * 30
   }
 }));
 
-// Health check
 app.get('/health', (req, res) => {
   res.json({
     status: 'ok'
   });
 });
 
-// Authentication routes
 app.use('/auth', authRoutes);
 
-// Connect to MongoDB and start server
 mongoose.connect(process.env.MONGO_URI, {
   serverSelectionTimeoutMS: 10000
 })

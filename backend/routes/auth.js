@@ -17,17 +17,27 @@ router.get('/discord', (req, res) => {
 
   req.session.discordOAuthState = state;
 
-  const params = new URLSearchParams({
-    client_id: process.env.DISCORD_CLIENT_ID,
-    redirect_uri: process.env.DISCORD_REDIRECT_URI,
-    response_type: 'code',
-    scope: 'identify',
-    state
-  });
+  req.session.save(err => {
+    if (err) {
+      console.error('OAuth session save failed:', err);
 
-  res.redirect(
-    `${DISCORD_API}/oauth2/authorize?${params.toString()}`
-  );
+      return res.status(500).json({
+        error: 'Failed to start Discord authentication.'
+      });
+    }
+
+    const params = new URLSearchParams({
+      client_id: process.env.DISCORD_CLIENT_ID,
+      redirect_uri: process.env.DISCORD_REDIRECT_URI,
+      response_type: 'code',
+      scope: 'identify',
+      state
+    });
+
+    res.redirect(
+      `${DISCORD_API}/oauth2/authorize?${params.toString()}`
+    );
+  });
 });
 
 // Discord OAuth2 callback
@@ -35,14 +45,12 @@ router.get('/discord/callback', async (req, res) => {
   try {
     const { code, state, error } = req.query;
 
-    // User cancelled Discord login
     if (error) {
       return res.redirect(
-        `${process.env.FRONTEND_URL}/login.html?error=discord_denied`
+        `${process.env.FRONTEND_URL}/index.html?error=discord_denied`
       );
     }
 
-    // Check OAuth state
     if (
       !code ||
       !state ||
@@ -54,10 +62,8 @@ router.get('/discord/callback', async (req, res) => {
       });
     }
 
-    // OAuth state can only be used once
     delete req.session.discordOAuthState;
 
-    // Exchange Discord authorization code for access token
     const tokenResponse = await fetch(
       `${DISCORD_API}/oauth2/token`,
       {
@@ -82,13 +88,12 @@ router.get('/discord/callback', async (req, res) => {
       );
 
       return res.redirect(
-        `${process.env.FRONTEND_URL}/login.html?error=discord_auth_failed`
+        `${process.env.FRONTEND_URL}/index.html?error=discord_auth_failed`
       );
     }
 
     const tokenData = await tokenResponse.json();
 
-    // Get the authenticated Discord user
     const userResponse = await fetch(
       `${DISCORD_API}/users/@me`,
       {
@@ -105,18 +110,16 @@ router.get('/discord/callback', async (req, res) => {
       );
 
       return res.redirect(
-        `${process.env.FRONTEND_URL}/login.html?error=discord_user_failed`
+        `${process.env.FRONTEND_URL}/index.html?error=discord_user_failed`
       );
     }
 
     const discordUser = await userResponse.json();
 
-    // Find existing account
     let user = await User.findOne({
       discordId: discordUser.id
     });
 
-    // Create account if this is their first login
     if (!user) {
       user = new User({
         discordId: discordUser.id,
@@ -125,7 +128,6 @@ router.get('/discord/callback', async (req, res) => {
         avatar: discordUser.avatar || null
       });
     } else {
-      // Update Discord information
       user.username = discordUser.username;
       user.globalName = discordUser.global_name || null;
       user.avatar = discordUser.avatar || null;
@@ -133,7 +135,6 @@ router.get('/discord/callback', async (req, res) => {
 
     await user.save();
 
-    // Store authenticated user in session
     req.session.userId = user._id.toString();
     req.session.discordId = user.discordId;
 
@@ -155,7 +156,7 @@ router.get('/discord/callback', async (req, res) => {
     console.error('Discord authentication error:', err);
 
     res.redirect(
-      `${process.env.FRONTEND_URL}/login.html?error=server_error`
+      `${process.env.FRONTEND_URL}/index.html?error=server_error`
     );
   }
 });
@@ -204,7 +205,7 @@ router.post('/logout', (req, res) => {
       });
     }
 
-    res.clearCookie('connect.sid');
+    res.clearCookie('tournament.sid');
 
     res.json({
       message: 'Logged out successfully'
