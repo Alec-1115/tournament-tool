@@ -1,8 +1,25 @@
-*{box-sizing:border-box;margin:0;padding:0}
+*{
+box-sizing:border-box;
+margin:0;
+padding:0
+}
 
-:root{--bg:#05070c;--text:#fff;--muted:#a6adbb}
+:root{
+--bg:#05070c;
+--text:#fff;
+--muted:#a6adbb;
 
-html,body{width:100%;min-height:100%;overflow-x:hidden}
+--discord:#5865F2;
+--discord-hover:#4f5bdc;
+--discord-active:#4752c4;
+}
+
+html,
+body{
+width:100%;
+min-height:100%;
+overflow-x:hidden
+}
 
 body{
 min-height:100vh;
@@ -12,7 +29,9 @@ font-family:Arial,sans-serif;
 isolation:isolate
 }
 
-body:before,body:after,main:before{
+body:before,
+body:after,
+main:before{
 content:"";
 position:fixed;
 z-index:-1;
@@ -22,42 +41,77 @@ filter:blur(140px)
 }
 
 body:before{
-width:600px;height:450px;
-top:-180px;left:-160px;
+width:600px;
+height:450px;
+top:-180px;
+left:-160px;
 background:rgba(0,170,255,.13);
 animation:blue 22s ease-in-out infinite alternate
 }
 
 body:after{
-width:600px;height:450px;
-right:-160px;bottom:-180px;
+width:600px;
+height:450px;
+right:-160px;
+bottom:-180px;
 background:rgba(255,35,75,.11);
 animation:red 25s ease-in-out infinite alternate
 }
 
 main:before{
-width:550px;height:550px;
-top:20%;left:35%;
-background:radial-gradient(circle,rgba(70,90,255,.09),rgba(255,40,100,.04) 45%,transparent 70%);
+width:550px;
+height:550px;
+top:20%;
+left:35%;
+background:radial-gradient(
+circle,
+rgba(70,90,255,.09),
+rgba(255,40,100,.04) 45%,
+transparent 70%
+);
 animation:center 28s ease-in-out infinite alternate
 }
 
 @keyframes blue{
-0%{transform:translate(-10%,-5%) scale(1)}
-50%{transform:translate(60%,45%) scale(1.2)}
-100%{transform:translate(15%,90%) scale(.9)}
+0%{
+transform:translate(-10%,-5%) scale(1)
+}
+
+50%{
+transform:translate(60%,45%) scale(1.2)
+}
+
+100%{
+transform:translate(15%,90%) scale(.9)
+}
 }
 
 @keyframes red{
-0%{transform:translate(10%,5%) scale(1)}
-50%{transform:translate(-60%,-45%) scale(1.2)}
-100%{transform:translate(-15%,-90%) scale(.9)}
+0%{
+transform:translate(10%,5%) scale(1)
+}
+
+50%{
+transform:translate(-60%,-45%) scale(1.2)
+}
+
+100%{
+transform:translate(-15%,-90%) scale(.9)
+}
 }
 
 @keyframes center{
-0%{transform:translate(-25%,10%) scale(.9)}
-50%{transform:translate(30%,-20%) scale(1.1)}
-100%{transform:translate(5%,30%) scale(.95)}
+0%{
+transform:translate(-25%,10%) scale(.9)
+}
+
+50%{
+transform:translate(30%,-20%) scale(1.1)
+}
+
+100%{
+transform:translate(5%,30%) scale(.95)
+}
 }
 
 main{
@@ -70,7 +124,10 @@ gap:60px;
 position:relative
 }
 
-.carousel{display:flex;justify-content:center}
+.carousel{
+display:flex;
+justify-content:center
+}
 
 .track{
 width:480px;
@@ -81,18 +138,30 @@ perspective:1500px
 
 .card{
 position:absolute;
-top:50%;left:50%;
-width:390px;height:225px;
+top:50%;
+left:50%;
+width:390px;
+height:225px;
 padding:32px;
 border:1px solid rgba(255,255,255,.09);
 border-radius:24px;
-background:linear-gradient(135deg,rgba(255,255,255,.075),rgba(255,255,255,.025));
+background:linear-gradient(
+135deg,
+rgba(255,255,255,.075),
+rgba(255,255,255,.025)
+);
 backdrop-filter:blur(22px);
-box-shadow:0 35px 80px rgba(0,0,0,.45),inset 0 1px rgba(255,255,255,.06);
+-webkit-backdrop-filter:blur(22px);
+box-shadow:
+0 35px 80px rgba(0,0,0,.45),
+inset 0 1px rgba(255,255,255,.06);
 opacity:0;
 filter:blur(8px);
 transform:translate3d(-50%,-50%,-400px) scale(.55);
-transition:transform 1.15s cubic-bezier(.16,1,.3,1),opacity 1.15s ease,filter 1.15s ease;
+transition:
+transform 1.15s cubic-bezier(.16,1,.3,1),
+opacity 1.15s ease,
+filter 1.15s ease;
 overflow:hidden
 }
 
@@ -102,10 +171,14 @@ transform:translateY(15px);
 transition:.7s ease
 }
 
-.card.center div{opacity:1;transform:none}
+.card.center div{
+opacity:1;
+transform:none
+}
 
 .icon{
-width:50px;height:50px;
+width:50px;
+height:50px;
 margin-bottom:18px;
 display:flex;
 align-items:center;
@@ -116,7 +189,10 @@ border:1px solid rgba(255,255,255,.08);
 font-size:1.45rem
 }
 
-.card h2{margin-bottom:10px;font-size:1.45rem}
+.card h2{
+margin-bottom:10px;
+font-size:1.45rem
+}
 
 .card p{
 max-width:315px;
@@ -132,28 +208,54 @@ filter:blur(0);
 transform:translate3d(-50%,-50%,80px) scale(1.05)
 }
 
-.up-1,.down-1{
+.up-1,
+.down-1{
 z-index:12;
 opacity:.42;
 filter:blur(2px);
-transform:translate3d(-50%,calc(-50% - 125px),-80px) scale(.86)
+transform:translate3d(
+-50%,
+calc(-50% - 125px),
+-80px
+) scale(.86)
 }
 
-.down-1{transform:translate3d(-50%,calc(-50% + 125px),-80px) scale(.86)}
+.down-1{
+transform:translate3d(
+-50%,
+calc(-50% + 125px),
+-80px
+) scale(.86)
+}
 
-.up-2,.down-2{
+.up-2,
+.down-2{
 z-index:5;
 opacity:.17;
 filter:blur(5px);
-transform:translate3d(-50%,calc(-50% - 215px),-260px) scale(.7)
+transform:translate3d(
+-50%,
+calc(-50% - 215px),
+-260px
+) scale(.7)
 }
 
-.down-2{transform:translate3d(-50%,calc(-50% + 215px),-260px) scale(.7)}
+.down-2{
+transform:translate3d(
+-50%,
+calc(-50% + 215px),
+-260px
+) scale(.7)
+}
 
 .hidden{
 opacity:0;
 pointer-events:none;
-transform:translate3d(-50%,-50%,-500px) scale(.45)
+transform:translate3d(
+-50%,
+-50%,
+-500px
+) scale(.45)
 }
 
 .info{
@@ -183,49 +285,129 @@ font-size:1rem;
 line-height:1.75
 }
 
-.buttons{
-display:flex;
-flex-direction:column;
-align-items:center;
-gap:13px
-}
+
+/* =========================
+   DISCORD BUTTON
+   ========================= */
 
 .button{
-width:220px;height:58px;
+width:240px;
+height:60px;
+
 display:flex;
 align-items:center;
 justify-content:center;
-border:1px solid rgba(255,255,255,.09);
-border-radius:18px;
-background:linear-gradient(135deg,rgba(255,255,255,.075),rgba(255,255,255,.025));
-backdrop-filter:blur(22px);
+
+position:relative;
+
+padding:0 22px;
+
+border:1px solid rgba(255,255,255,.08);
+border-radius:16px;
+
+background:var(--discord);
 color:#fff;
+
 text-decoration:none;
+
 font-family:Inter,Arial,sans-serif;
-font-size:.92rem;
+font-size:.94rem;
 font-weight:700;
-box-shadow:0 20px 45px rgba(0,0,0,.25),inset 0 1px rgba(255,255,255,.07);
-transition:transform .4s cubic-bezier(.16,1,.3,1),border-color .4s ease,background .4s ease,box-shadow .4s ease
+letter-spacing:-.01em;
+
+box-shadow:
+0 12px 28px rgba(0,0,0,.28),
+0 4px 12px rgba(88,101,242,.12),
+inset 0 1px rgba(255,255,255,.18),
+inset 0 -1px rgba(0,0,0,.12);
+
+transition:
+background .2s ease,
+box-shadow .2s ease,
+border-color .2s ease
 }
 
 .button:hover{
-transform:translateY(-5px) scale(1.015);
-border-color:rgba(255,255,255,.18);
-background:linear-gradient(135deg,rgba(255,255,255,.09),rgba(255,255,255,.035));
-box-shadow:0 25px 55px rgba(0,0,0,.35),inset 0 1px rgba(255,255,255,.1)
+background:var(--discord-hover);
+
+border-color:rgba(255,255,255,.12);
+
+box-shadow:
+0 14px 32px rgba(0,0,0,.32),
+0 5px 16px rgba(88,101,242,.15),
+inset 0 1px rgba(255,255,255,.2),
+inset 0 -1px rgba(0,0,0,.12)
 }
 
-.button:active{transform:translateY(-1px) scale(.99)}
+.button:active{
+background:var(--discord-active);
 
-.signup{background:linear-gradient(135deg,rgba(255,255,255,.085),rgba(255,255,255,.03))}
+box-shadow:
+0 7px 18px rgba(0,0,0,.3),
+inset 0 2px 5px rgba(0,0,0,.12)
+}
+
+.button:focus-visible{
+outline:none;
+box-shadow:
+0 0 0 3px rgba(5,7,12,.9),
+0 0 0 5px rgba(88,101,242,.75),
+0 12px 28px rgba(0,0,0,.28)
+}
+
+.discord-button{
+gap:13px;
+}
+
+.discord-button-text{
+display:block;
+line-height:1;
+}
+
+.discord-icon{
+width:28px;
+height:28px;
+
+display:block;
+
+flex:0 0 28px;
+
+object-fit:contain;
+
+filter:none;
+}
+
+
+/* =========================
+   TABLET
+   ========================= */
 
 @media(max-width:1000px){
-main{padding:45px 4vw;gap:30px}
-.track{width:440px;height:380px}
-.card{width:370px;height:220px}
+
+main{
+padding:45px 4vw;
+gap:30px
 }
 
+.track{
+width:440px;
+height:380px
+}
+
+.card{
+width:370px;
+height:220px
+}
+
+}
+
+
+/* =========================
+   MOBILE
+   ========================= */
+
 @media(max-width:700px){
+
 main{
 display:flex;
 flex-direction:column;
@@ -234,7 +416,11 @@ gap:20px;
 padding:35px 15px
 }
 
-.track{width:100%;max-width:390px;height:300px}
+.track{
+width:100%;
+max-width:390px;
+height:300px
+}
 
 .card{
 width:330px;
@@ -243,15 +429,53 @@ height:200px;
 padding:25px
 }
 
-.center{transform:translate3d(-50%,-50%,50px) scale(1)}
-.up-1{transform:translate3d(-50%,calc(-50% - 85px),-80px) scale(.84)}
-.down-1{transform:translate3d(-50%,calc(-50% + 85px),-80px) scale(.84)}
-.up-2{transform:translate3d(-50%,calc(-50% - 150px),-220px) scale(.68)}
-.down-2{transform:translate3d(-50%,calc(-50% + 150px),-220px) scale(.68)}
+.center{
+transform:translate3d(
+-50%,
+-50%,
+50px
+) scale(1)
+}
 
-.info{transform:none}
+.up-1{
+transform:translate3d(
+-50%,
+calc(-50% - 85px),
+-80px
+) scale(.84)
+}
 
-.info h1{font-size:3.2rem}
+.down-1{
+transform:translate3d(
+-50%,
+calc(-50% + 85px),
+-80px
+) scale(.84)
+}
+
+.up-2{
+transform:translate3d(
+-50%,
+calc(-50% - 150px),
+-220px
+) scale(.68)
+}
+
+.down-2{
+transform:translate3d(
+-50%,
+calc(-50% + 150px),
+-220px
+) scale(.68)
+}
+
+.info{
+transform:none
+}
+
+.info h1{
+font-size:3.2rem
+}
 
 .info>p{
 max-width:340px;
@@ -259,11 +483,35 @@ margin-bottom:28px;
 font-size:.88rem
 }
 
-.button{width:190px;height:52px}
+.button{
+width:220px;
+height:56px;
+border-radius:15px;
+font-size:.9rem;
 }
 
+.discord-button{
+gap:11px;
+}
+
+.discord-icon{
+width:26px;
+height:26px;
+flex-basis:26px;
+}
+
+}
+
+
+/* =========================
+   SMALL PHONES
+   ========================= */
+
 @media(max-width:380px){
-.track{height:270px}
+
+.track{
+height:270px
+}
 
 .card{
 width:calc(100vw - 40px);
@@ -271,9 +519,43 @@ height:185px;
 padding:22px
 }
 
-.center{transform:translate3d(-50%,-50%,40px) scale(.96)}
-.up-1{transform:translate3d(-50%,calc(-50% - 75px),-70px) scale(.8)}
-.down-1{transform:translate3d(-50%,calc(-50% + 75px),-70px) scale(.8)}
+.center{
+transform:translate3d(
+-50%,
+-50%,
+40px
+) scale(.96)
+}
 
-.info h1{font-size:2.8rem}
+.up-1{
+transform:translate3d(
+-50%,
+calc(-50% - 75px),
+-70px
+) scale(.8)
+}
+
+.down-1{
+transform:translate3d(
+-50%,
+calc(-50% + 75px),
+-70px
+) scale(.8)
+}
+
+.info h1{
+font-size:2.8rem
+}
+
+.button{
+width:210px;
+height:54px;
+}
+
+.discord-icon{
+width:25px;
+height:25px;
+flex-basis:25px;
+}
+
 }
