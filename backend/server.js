@@ -30,6 +30,9 @@ for (const name of requiredEnv) {
   }
 }
 
+// Trust Render's reverse proxy
+app.set('trust proxy', 1);
+
 // Allow the Vercel frontend to communicate with the backend
 app.use(cors({
   origin: process.env.FRONTEND_URL,
@@ -55,11 +58,9 @@ app.use(session({
   cookie: {
     httpOnly: true,
 
-    secure: process.env.NODE_ENV === 'production',
+    secure: true,
 
-    sameSite: process.env.NODE_ENV === 'production'
-      ? 'none'
-      : 'lax',
+    sameSite: 'none',
 
     maxAge: 1000 * 60 * 60 * 24
   }
