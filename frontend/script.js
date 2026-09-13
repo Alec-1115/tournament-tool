@@ -1,25 +1,36 @@
-const cards=document.querySelectorAll(".card");
-let current=0;
+const cards = [...document.querySelectorAll(".card")];
 
-function update(index){
-    current=(index+cards.length)%cards.length;
+let current = 0;
 
-    cards.forEach((card,i)=>{
-        let position=i-current;
+function updateCarousel() {
+    cards.forEach(card => {
+        card.className = "card hidden";
+    });
 
-        if(position>cards.length/2)position-=cards.length;
-        if(position<-cards.length/2)position+=cards.length;
+    cards.forEach((card, index) => {
+        const offset = (index - current + cards.length) % cards.length;
 
-        card.className="card";
-
-        if(position===0)card.classList.add("center");
-        else if(position===-1)card.classList.add("up-1");
-        else if(position===1)card.classList.add("down-1");
-        else if(position===-2)card.classList.add("up-2");
-        else if(position===2)card.classList.add("down-2");
-        else card.classList.add("hidden");
+        if (offset === 0) {
+            card.className = "card center";
+        } else if (offset === 1) {
+            card.className = "card down-1";
+        } else if (offset === 2) {
+            card.className = "card down-2";
+        } else if (offset === cards.length - 1) {
+            card.className = "card up-1";
+        } else if (offset === cards.length - 2) {
+            card.className = "card up-2";
+        } else {
+            card.className = "card hidden";
+        }
     });
 }
 
-update(0);
-setInterval(()=>update(current+1),4000);
+function nextCard() {
+    current = (current + 1) % cards.length;
+    updateCarousel();
+}
+
+updateCarousel();
+
+setInterval(nextCard, 3500);
