@@ -11,63 +11,71 @@
 
 <body>
 
-<main>
+    <div class="background-orb orb-one"></div>
+    <div class="background-orb orb-two"></div>
+    <div class="background-orb orb-three"></div>
 
-    <section class="carousel">
-        <div class="track">
+    <main>
 
-            <div class="card"></div>
-            <div class="card"></div>
-            <div class="card"></div>
-            <div class="card"></div>
-            <div class="card"></div>
+        <section class="carousel">
 
-        </div>
-    </section>
+            <div class="track">
 
-    <section class="info">
+                <div class="card"></div>
+                <div class="card"></div>
+                <div class="card"></div>
+                <div class="card"></div>
+                <div class="card"></div>
 
-        <h1>Tournament Bot</h1>
+            </div>
 
-        <p>
-            Create, manage and compete in tournaments with your community.
-        </p>
+        </section>
 
-        <div class="sign-in-section">
+        <section class="info">
 
-            <span class="sign-in-label">Sign in with</span>
+            <h1>Tournament Bot</h1>
+
+            <p>
+                Create, manage and compete in tournaments with your community.
+            </p>
+
+            <div class="sign-in-section">
+
+                <span class="sign-in-label">
+                    Sign in with
+                </span>
+
+                <a
+                    href="https://tournament-tool-f1p7.onrender.com/auth/discord"
+                    class="discord-button"
+                    aria-label="Sign in with Discord"
+                >
+                    <img
+                        src="assets/discord-svgrepo-com.svg"
+                        class="discord-icon"
+                        alt="Discord"
+                        aria-hidden="true"
+                    >
+                </a>
+
+            </div>
+
+            <div class="auth-divider">
+                <span>or</span>
+            </div>
 
             <a
-                href="https://tournament-tool-f1p7.onrender.com/auth/discord"
-                class="discord-button"
-                aria-label="Sign in with Discord"
+                href="dashboard.html"
+                class="guest-button"
             >
-                <img
-                    src="assets/discord-svgrepo-com.svg"
-                    class="discord-icon"
-                    alt="Discord"
-                    aria-hidden="true"
-                >
+                Continue as guest
             </a>
 
-        </div>
+        </section>
 
-        <div class="auth-divider">
-            <span>or</span>
-        </div>
+    </main>
 
-        <a
-            href="dashboard.html"
-            class="guest-button"
-        >
-            Continue as guest
-        </a>
-
-    </section>
-
-</main>
-
-<script src="script.js"></script>
+    <script src="script.js"></script>
 
 </body>
 </html>
