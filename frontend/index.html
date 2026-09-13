@@ -3,17 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+
 <title>Tournament Bot</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800&display=swap" rel="stylesheet">
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&display=swap"
+    rel="stylesheet"
+>
+
 <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 <main>
 
 <section class="carousel">
+
 <div class="track">
 
 <article class="card">
@@ -57,20 +66,52 @@
 </article>
 
 </div>
+
 </section>
+
 
 <section class="info">
 
 <h1>Tournament Bot</h1>
 
-<p>A powerful tournament management platform designed to make creating, organising and running tournaments simple.</p>
+<p>
+A powerful tournament management platform designed to make creating,
+organising and running tournaments simple.
+</p>
+
+
+<div class="sign-in-section">
+
+<span class="sign-in-label">Sign in with</span>
 
 <a
     href="https://tournament-tool-f1p7.onrender.com/auth/discord"
     class="button discord-button"
     aria-label="Sign in with Discord"
 >
-    <span class="discord-button-text">Sign in with Discord</span>
+
+<img
+    src="assets/discord-svgrepo-com.svg"
+    class="discord-icon"
+    alt="Discord"
+    aria-hidden="true"
+>
+
+</a>
+
+</div>
+
+
+<div class="auth-divider">
+<span>or</span>
+</div>
+
+
+<a
+    href="dashboard.html"
+    class="guest-button"
+>
+    Continue as guest
 </a>
 
 </section>
@@ -78,5 +119,6 @@
 </main>
 
 <script src="script.js"></script>
+
 </body>
 </html>
